@@ -10,6 +10,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -26,24 +32,36 @@ public class ImageController {
 
     @GetMapping
     public List<Image> getImages(){
+
+        List<Image> imageList = imageService.getImages();
+
+
+
         return imageService.getImages();
     }
 
-
     @PostMapping
-    public void postImage(@RequestParam("file") MultipartFile file) throws IOException {
+    public void postImage(@RequestParam("file") MultipartFile file) throws IOException, ParseException {
         Image image =  new Image();
         Random rnd = new Random();
 
         //Add a random number in front of the file name to make it unique for the frontend
         String imageName = rnd.nextInt(50000) + file.getOriginalFilename();
 
+
+        LocalDateTime ldt = LocalDateTime.now();
+
         byte[] bytes = file.getBytes();
         Path path = Paths.get("C:\\Users\\podon\\Documents\\Projetos\\React\\image-test\\image-test\\public\\image\\" + imageName);
         Files.write(path, bytes);
 
         image.setFileName(imageName);
-
+        image.setDate(ldt);
         imageService.saveImage(image);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteImage(@PathVariable int id){
+        imageService.deleteImage(id);
     }
 }

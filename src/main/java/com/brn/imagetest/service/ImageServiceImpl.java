@@ -29,4 +29,12 @@ public class ImageServiceImpl implements ImageService{
     public void saveImage(Image image) {
         imageRepository.save(image);
     }
+
+    @Override
+    public void deleteImage(int id) {
+        Optional<Image> op = imageRepository.findById(id);
+        imageRepository.delete(op.orElseGet(op::orElseThrow));
+    }
+
+
 }

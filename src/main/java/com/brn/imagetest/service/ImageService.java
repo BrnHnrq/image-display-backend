@@ -10,4 +10,5 @@ public interface ImageService{
     Image getImage(int id);
     List<Image> getImages();
     void saveImage(Image image);
+    void deleteImage(int id);
 }

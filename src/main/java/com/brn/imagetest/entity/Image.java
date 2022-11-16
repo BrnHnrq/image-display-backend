@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -13,10 +14,12 @@ import java.util.Objects;
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private Long id;
-    @Column(name = "FILE_NAME")
-    public String fileName;
+    @Column(name = "id")
+    private Integer id;
+    @Column(name = "path")
+    private String fileName;
+    @Column(name = "date")
+    private LocalDateTime date;
 
     @Override
     public boolean equals(Object o) {
