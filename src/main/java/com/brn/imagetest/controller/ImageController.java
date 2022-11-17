@@ -10,12 +10,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -25,6 +21,8 @@ public class ImageController {
     @Autowired
     ImageService imageService;
 
+    String url = "C:\\Users\\podon\\Documents\\Projetos\\React\\image-test\\image-test\\public\\image\\";
+
     @GetMapping("/{id}")
     public Image getImage(@PathVariable int id){
         return imageService.getImage(id);
@@ -32,11 +30,6 @@ public class ImageController {
 
     @GetMapping
     public List<Image> getImages(){
-
-        List<Image> imageList = imageService.getImages();
-
-
-
         return imageService.getImages();
     }
 
@@ -52,7 +45,7 @@ public class ImageController {
         LocalDateTime ldt = LocalDateTime.now();
 
         byte[] bytes = file.getBytes();
-        Path path = Paths.get("C:\\Users\\podon\\Documents\\Projetos\\React\\image-test\\image-test\\public\\image\\" + imageName);
+        Path path = Paths.get(url + imageName);
         Files.write(path, bytes);
 
         image.setFileName(imageName);
@@ -61,7 +54,12 @@ public class ImageController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteImage(@PathVariable int id){
+    public void deleteImage(@PathVariable int id) throws IOException {
+
+        Image image = imageService.getImage(id);
+
+        Files.delete(Path.of(url + image.getFileName()));
+
         imageService.deleteImage(id);
     }
 }
